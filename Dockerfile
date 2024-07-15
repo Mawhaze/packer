@@ -1,4 +1,4 @@
-From hashicorp/packer:latest
+FROM hashicorp/packer:latest
 
 USER root
 
