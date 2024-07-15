@@ -3,9 +3,9 @@ FROM hashicorp/packer:latest
 USER root
 
 # Install dependencies
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y openssh-client vim
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache openssh-client python3 python3-pip vim
 
 # Install AWS CLI
 RUN pip3 install --upgrade pip && \
@@ -19,24 +19,24 @@ RUN mkdir -p \
     /packer/variables
 
 # Create a non-root user for running Packer and set up ssh
-RUN useradd -m -s /bin/bash sa-packer && \
+RUN adduser -D sa-packer && \
     mkdir -p /home/sa-packer/.ssh && \
     chown -R sa-packer:sa-packer /home/sa-packer/.ssh && \
     chmod 700 /home/sa-packer/.ssh
 
 # Use Docker secrets to handle SSH keys securely
 RUN --mount=type=secret,id=ssh_private_key \
-    echo "$(cat /run/secrets/ssh_private_key)" > .ssh/id_ed25519 && \
-    chmod 600 .ssh/id_ed25519
+    echo "$(cat /run/secrets/ssh_private_key)" > /home/sa-packer/.ssh/id_ed25519 && \
+    chmod 600 /home/sa-packer/.ssh/id_ed25519
 
 RUN --mount=type=secret,id=ssh_public_key \
-    echo "$(cat /run/secrets/ssh_public_key)" > .ssh/id_ed25519.pub && \
-    chmod 644 .ssh/id_ed25519.pub
+    echo "$(cat /run/secrets/ssh_public_key)" > /home/sa-packer/.ssh/id_ed25519.pub && \
+    chmod 644 /home/sa-packer/.ssh/id_ed25519.pub
 
-RUN echo "Host *\n\tStrictHostKeyChecking no\n" > .ssh/config && \
-    chown -R sa-packer:sa-packer .ssh
+RUN echo "Host *\n\tStrictHostKeyChecking no\n" > /home/sa-packer/.ssh/config && \
+    chown -R sa-packer:sa-packer /home/sa-packer/.ssh
 
-# Copy in required files
+    # Copy in required files
 COPY ./http /packer/http
 COPY ./templates /packer/templates
 COPY ./variables /packer/variables
