@@ -5,7 +5,7 @@ USER root
 # Install dependencies
 RUN apk update && \
     apk upgrade && \
-    apk add --no-cache openssh-client python3 python3-pip vim
+    apk add --no-cache openssh-client python3 py3-pip vim
 
 # Install AWS CLI
 RUN pip3 install --upgrade pip && \
