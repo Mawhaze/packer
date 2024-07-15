@@ -1,0 +1,80 @@
+// Set up packer folders
+folder('packer/containers') {
+  description('Packer jobs for Jenkins')
+}
+
+folder('packer/iso') {
+  description('Packer jobs for Jenkins')
+}
+
+// Define the packer build jobs within the packer/containers folder
+// Keep this alphabetical for easier maintenance
+// Define the packer build jobs within the packer/iso folder
+pipelineJob('packer/iso/proxmox_ubuntu_24.04_template') {
+  logRotator {
+    numToKeep(10) //Only keep the last 10
+  }
+  definition {
+    cps {
+      // Inline Groovy script for pipeline definition
+      script("""
+pipeline {
+  agent any
+  stages {
+      stage('Sign into DockerHub and Pull Docker Image') {
+          steps {
+              script {
+                  docker.withRegistry('https://index.docker.io/v1/', 'dockerhub_credentials') {
+                      // Pull the Docker image from DockerHub before running it
+                      sh "docker pull mawhaze/packer:latest"
+                  }
+              }
+          }
+      }
+      stage('Run Packer Build') {
+          steps {
+              withCredentials([
+                  usernamePassword(credentialsId: 'sa_packer_proxmox_creds', usernameVariable: 'PROXMOX_USERNAME', passwordVariable: 'PROXMOX_PASSWORD'),
+                  string(credentialsId: '', variable: 'ANSIBLE_SSH_PUBLIC_KEY'),
+                  string(credentialsId: '', variable: 'PACKER_SSH_PUBLIC_KEY'),
+              ]) {
+                  sh(
+                      'docker run -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
+                      -e ANSIBLE_SSH_PUBLIC_KEY=\$ANSIBLE_SSH_PUBLIC_KEY -e PACKER_SSH_PUBLIC_KEY=\$PACKER_SSH_PUBLIC_KEY \
+                      mawhaze/packer:latest \
+                      packer build -var-file=/packer/variables/node01-prox-ubuntu-2404.pkrvars.hcl packer/templates/prox-ubuntu.pkr.hcl'
+                  )
+              }
+          }
+      }
+  }
+}
+      """)
+    }
+  }
+}
+
+// Docker build job for Packer
+pipelineJob('docker/build/packer_docker') {
+  description('Build the Packer Docker image from a Jenkinsfile')
+  logRotator {
+    numToKeep(10) //Only keep the last 10
+  }
+  definition {
+    cpsScm {
+      scm {
+        git {
+          remote {
+            url('https://github.com/mawhaze/packer.git')
+            credentials('github_access_token')
+          }
+          branches('*/master')
+          scriptPath('Jenkinsfile')
+        }
+      }
+    }
+  }
+  triggers {
+    scm('H/15 * * * *') // Poll SCM every 15 minutes.
+  }
+}
