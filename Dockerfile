@@ -38,7 +38,6 @@ RUN echo "Host *\n\tStrictHostKeyChecking no\n" > .ssh/config && \
 
 # Copy in required files
 COPY ./http /packer/http
-COPY ./scripts /packer/scripts
 COPY ./templates /packer/templates
 COPY ./variables /packer/variables
 
