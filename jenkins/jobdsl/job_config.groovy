@@ -68,7 +68,7 @@ pipelineJob('docker/build/packer_docker') {
             url('https://github.com/mawhaze/packer.git')
             credentials('github_access_token')
           }
-          branches('*/master')
+          branches('*/main')
           scriptPath('Jenkinsfile')
         }
       }
