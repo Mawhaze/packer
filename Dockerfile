@@ -5,7 +5,7 @@ USER root
 # Install dependencies
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y bash curl git jq openssh-client python3 python3-pip vim
+    apt-get install -y openssh-client vim
 
 # Install AWS CLI
 RUN pip3 install --upgrade pip && \
