@@ -40,7 +40,7 @@ pipeline {
               ]) {
                   sh(
                       'docker run -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
-                      -e ANSIBLE_SSH_PUBLIC_KEY=\$ANSIBLE_SSH_PUBLIC_KEY -e PACKER_SSH_PUBLIC_KEY=\$PACKER_SSH_PUBLIC_KEY \
+                      -e ANSIBLE_SSH_PUBLIC_KEY="\$ANSIBLE_SSH_PUBLIC_KEY" -e PACKER_SSH_PUBLIC_KEY="\$PACKER_SSH_PUBLIC_KEY" \
                       mawhaze/packer:latest \
                       packer build -var-file=/packer/variables/node01-prox-ubuntu-2404.pkrvars.hcl packer/templates/prox-ubuntu.pkr.hcl'
                   )
