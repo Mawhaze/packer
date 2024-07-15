@@ -7,9 +7,10 @@ RUN apk update && \
     apk upgrade && \
     apk add --no-cache openssh-client python3 py3-pip vim
 
-# Install AWS CLI
-RUN pip3 install --upgrade pip && \
-    pip3 install awscli
+# Not needed until AWS builds are configured    
+# # Install AWS CLI
+# RUN pip3 install --upgrade pip && \
+#     pip3 install awscli
 
 # Create the Packer directories
 RUN mkdir -p \
