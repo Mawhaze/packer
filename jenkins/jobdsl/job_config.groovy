@@ -35,8 +35,8 @@ pipeline {
           steps {
               withCredentials([
                   usernamePassword(credentialsId: 'sa_packer_proxmox_creds', usernameVariable: 'PROXMOX_USERNAME', passwordVariable: 'PROXMOX_PASSWORD'),
-                  string(credentialsId: '', variable: 'ANSIBLE_SSH_PUBLIC_KEY'),
-                  string(credentialsId: '', variable: 'PACKER_SSH_PUBLIC_KEY'),
+                  string(credentialsId: 'ansible_public_ssh_key', variable: 'ANSIBLE_SSH_PUBLIC_KEY'),
+                  string(credentialsId: 'packer_public_ssh_key', variable: 'PACKER_SSH_PUBLIC_KEY'),
               ]) {
                   sh(
                       'docker run -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
