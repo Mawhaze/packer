@@ -65,7 +65,7 @@ pipelineJob('docker/build/packer_docker') {
       scm {
         git {
           remote {
-            url('https://github.com/mawhaze/packer.git')
+            url('https://github.com/Mawhaze/packer.git')
             credentials('github_access_token')
           }
           branches('*/main')
