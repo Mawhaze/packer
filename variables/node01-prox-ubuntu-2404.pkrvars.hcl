@@ -1,8 +1,6 @@
 # Proxmox Variables
 node_name = "node01"
 proxmox_url = "https://10.10.10.10:8006/api2/json"
-proxmox_username = "{{env `PROXMOX_USERNAME`}}"
-proxmox_password = "{{env `PROXMOX_PASSWORD`}}"
 # VM template variables
 http_directory = "/packer/http"
 iso_file = "net-data:iso/ubuntu-24.04.1-live-server-amd64.iso"
