@@ -7,11 +7,6 @@ RUN apk update && \
     apk upgrade && \
     apk add --no-cache openssh-client python3 py3-pip vim
 
-# Not needed until AWS builds are configured    
-# # Install AWS CLI
-# RUN pip3 install --upgrade pip && \
-#     pip3 install awscli
-
 # Create the Packer directories
 RUN mkdir -p \
     /packer/http \
@@ -37,15 +32,28 @@ RUN --mount=type=secret,id=ssh_public_key \
 RUN echo "Host *\n\tStrictHostKeyChecking no\n" > /home/sa-packer/.ssh/config && \
     chown -R sa-packer:sa-packer /home/sa-packer/.ssh
 
-    # Copy in required files
+# Copy in required files
 COPY ./http /packer/http
+COPY ./scripts /packer/scripts
 COPY ./templates /packer/templates
 COPY ./variables /packer/variables
 
 # Change ownership of /packer to sa-packer user and set user
 RUN chown -R sa-packer:sa-packer /packer
 USER sa-packer
+
+# Create and activate a virtual environment for Packers pip requirements
+RUN python3 -m venv /home/sa-packer/packer-venv
+RUN . home/sa-packer/packer-venv/bin/activate && \
+    pip install --upgrade pip && \
+    pip install python-hcl2 jinja2
+
+# Set the working directory
 WORKDIR /packer
 
+# Initialize Packer
+RUN packer init ./templates
+
 # Set the entrypoint
-ENTRYPOINT ["/bin/bash", "-c"]
+ENTRYPOINT ["/bin/bash", "-c", "source /home/sa-packer/packer-venv/bin/activate && exec \"$@\"", "--"]
+CMD ["packer", "--version"]

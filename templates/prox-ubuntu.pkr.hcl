@@ -7,14 +7,36 @@ packer {
   }
 }
 
-data "template_file" "user_data" {
-  template = file("${var.http_directory}/cloud-init.yml.j2")
-  vars = {
-    ansible_ssh_username = var.ansible_ssh_username
-    ansible_ssh_public_key = var.ansible_ssh_public_key
-    packer_ssh_username = var.packer_ssh_username
-    packer_ssh_public_key = var.packer_ssh_public_key
-  }
+variable "node_name" {
+  description = "Proxmox node name"
+}
+
+variable "proxmox_url" {
+  description = "Proxmox API URL"
+}
+
+variable "proxmox_username" {
+  description = "Proxmox username"
+  type        = string
+  default     = "${env("PROXMOX_USERNAME")}"
+}
+
+variable "proxmox_password" {
+  description = "Proxmox password"
+  type        = string
+  default     = "${env("PROXMOX_PASSWORD")}"
+}
+
+variable "iso_file" {
+  description = "ISO file to use for installation"
+}
+
+variable "proxmox_template_tags" {
+  description = "Tags to apply to the Proxmox template"
+}
+
+variable "proxmox_template_name" {
+  description = "Name of the Proxmox template"
 }
 
 source "proxmox-iso" "ubuntu-cloud" {
@@ -28,13 +50,11 @@ source "proxmox-iso" "ubuntu-cloud" {
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
   http_content     = {
-    "/user-data"   = data.template_file.user_data.rendered
+    "/user-data"   = file("http/cloud-init.yml")
   }
   iso_file         = var.iso_file
   memory           = "2048"
   os               = "126"
-  ssh_username     = var.packer_ssh_username
-  ssh_public_key   = var.packer_ssh_public_key
   ssh_timeout      = "30m"
   tags             = var.proxmox_template_tags
   template_name    = var.proxmox_template_name
@@ -42,20 +62,16 @@ source "proxmox-iso" "ubuntu-cloud" {
   unmount_iso      = true
   qemu_agent       = true
 
-  network_adapters = [
-    {
-      bridge = "vmbr0"
-      model  = "virtio"
-    }
-  ]
+  network_adapters = {
+    bridge = "vmbr0"
+    model  = "virtio"
+  }
 
-  disks = [
-    {
-      disk_size       = "32G"
-      storage_pool    = "net-data"
-      type       = "scsi"
-    }
-  ]
+  disks = {
+    disk_size       = "32G"
+    storage_pool    = "net-data"
+    type       = "scsi"
+  }
 
   boot_command = [
     "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
