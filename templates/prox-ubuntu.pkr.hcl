@@ -50,7 +50,7 @@ source "proxmox-iso" "ubuntu-cloud" {
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
   http_content     = {
-    "/user-data"   = file("http/cloud-init.yml")
+    "/user-data"   = file("/packer/http/cloud-init.yml")
   }
   iso_file         = var.iso_file
   memory           = "2048"
@@ -62,12 +62,12 @@ source "proxmox-iso" "ubuntu-cloud" {
   unmount_iso      = true
   qemu_agent       = true
 
-  network_adapters = {
+  network_adapters {
     bridge = "vmbr0"
     model  = "virtio"
   }
 
-  disks = {
+  disks {
     disk_size       = "32G"
     storage_pool    = "net-data"
     type       = "scsi"
