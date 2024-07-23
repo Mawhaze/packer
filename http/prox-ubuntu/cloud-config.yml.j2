@@ -6,26 +6,18 @@ autoinstall:
     layout: us
   ssh:
     install-server: yes
-    allow-pw: true
-
-  package_update: true
-  package_upgrade: true
-  packages:
-    - qemu-guest-agent
-    - cloud-init
-
   user-data:
-    preserve_hostname: false
-    hostname: ubuntu-24
-    disable_root: true
-    timezone: America/Denver
     users:
       {% for user in users %}
       - name: {{ user.name }}
-        ssh_authorized_keys:
+        ssh-authorized-keys:
           - {{ user.ssh_public_key }}
         sudo: ALL=(ALL) NOPASSWD:ALL
         groups: [sudo]
-        lock_passwd: false
+        lock-passwd: false
         shell: /bin/bash
       {% endfor %}
+  packages:
+    - qemu-guest-agent
+    - cloud-init
+    - openssh-server

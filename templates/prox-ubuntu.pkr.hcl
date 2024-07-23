@@ -46,16 +46,22 @@ source "proxmox-iso" "ubuntu-cloud" {
   username         = var.proxmox_username
   password         = var.proxmox_password
   # VM template core settings
+  bios             = "seabios"
   cores            = "2"
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
-  http_content     = {
-    "/user-data"   = file("/packer/http/cloud-init.yml")
-  }
+  http_directory   = "/packer/http/"
   iso_file         = var.iso_file
+  additional_iso_files {
+    cd_files         = ["/packer/http/user-data"]
+    cd_label         = "cidata"
+    iso_storage_pool = "net-data"
+    unmount          = true
+  }
   memory           = "2048"
-  os               = "126"
+  scsi_controller  = "virtio-scsi-pci"
   ssh_timeout      = "30m"
+  ssh_username     = "sa-packer"
   tags             = var.proxmox_template_tags
   template_name    = var.proxmox_template_name
   template_description = "Ubuntu 24.04 lab image, built on ${timestamp()}"
@@ -70,15 +76,16 @@ source "proxmox-iso" "ubuntu-cloud" {
   disks {
     disk_size       = "32G"
     storage_pool    = "net-data"
-    type       = "scsi"
+    type            = "scsi"
   }
 
   boot_command = [
-    "<spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait><spacebar><wait>",
+    "<esc><wait>",
     "e<wait>",
     "<down><down><down><end>",
-    " autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
-    "<f10>"
+    "<bs><bs><bs><bs><wait>",
+    "autoinstall ds=nocloud-net\\;s=/cdrom/ <enter><wait>",
+    "<f10><wait>"
   ]
   boot = "c"
   boot_wait = "5s"

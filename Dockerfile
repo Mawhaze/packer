@@ -46,7 +46,7 @@ USER sa-packer
 RUN python3 -m venv /home/sa-packer/packer-venv
 RUN . home/sa-packer/packer-venv/bin/activate && \
     pip install --upgrade pip && \
-    pip install python-hcl2 jinja2
+    pip install boto3 python-hcl2 jinja2
 
 # Set the working directory
 WORKDIR /packer
