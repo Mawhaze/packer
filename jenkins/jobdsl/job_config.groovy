@@ -42,7 +42,7 @@ pipeline {
                       'docker run -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
                       -e ANSIBLE_SSH_PUBLIC_KEY="\$ANSIBLE_SSH_PUBLIC_KEY" -e PACKER_SSH_PUBLIC_KEY="\$PACKER_SSH_PUBLIC_KEY" \
                       mawhaze/packer:latest \
-                      python create_cloud_init.py variables/node01-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-init.yml.j2 && \
+                      python /packer/scripts/create_cloud_init.py variables/node01-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-init.yml.j2 && \
                       packer build -var-file=variables/node01-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl'
                   )
               }
