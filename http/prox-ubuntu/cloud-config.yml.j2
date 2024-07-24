@@ -1,9 +1,20 @@
 #cloud-config
 autoinstall:
   version: 1
+  early-commandsVj
+    - systemctl stop sshd
   locale: en_US
   keyboard:
-    layout: us
+    layout: en
+    variant: us
+  network:
+    network:
+      version: 2
+      ethernets:
+        nics:
+          match:
+            name: en*
+          dhcp4: true
   ssh:
     install-server: yes
   user-data:
@@ -14,7 +25,7 @@ autoinstall:
           - {{ user.ssh_public_key }}
         sudo: ALL=(ALL) NOPASSWD:ALL
         groups: [sudo]
-        lock-passwd: false
+        lock_passwd: true
         shell: /bin/bash
       {% endfor %}
   packages:

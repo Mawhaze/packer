@@ -39,7 +39,7 @@ variable "proxmox_template_name" {
   description = "Name of the Proxmox template"
 }
 
-source "proxmox-iso" "ubuntu-cloud" {
+source "proxmox-iso" "ubuntu-server-noble-numbat" {
   # Proxmox settings
   node             = var.node_name
   proxmox_url      = var.proxmox_url
@@ -52,13 +52,14 @@ source "proxmox-iso" "ubuntu-cloud" {
   cloud_init_storage_pool = "net-data"
   http_directory   = "/packer/http/"
   iso_file         = var.iso_file
-  additional_iso_files {
-    cd_files         = ["/packer/http/user-data"]
-    cd_label         = "cidata"
-    iso_storage_pool = "net-data"
-    unmount          = true
-  }
-  memory           = "2048"
+  // additional_iso_files {
+  //   cd_files         = ["/packer/http/user-data"]
+  //   cd_label         = "cidata"
+  //   iso_storage_pool = "net-data"
+  //   unmount          = true
+  // }
+  memory           = "4096"
+  os               = "l26"
   scsi_controller  = "virtio-scsi-pci"
   ssh_timeout      = "30m"
   ssh_username     = "sa-packer"
@@ -84,7 +85,7 @@ source "proxmox-iso" "ubuntu-cloud" {
     "e<wait>",
     "<down><down><down><end>",
     "<bs><bs><bs><bs><wait>",
-    "autoinstall ds=nocloud-net\\;s=/cdrom/ <enter><wait>",
+    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }} ---<wait>",
     "<f10><wait>"
   ]
   boot = "c"
@@ -93,7 +94,7 @@ source "proxmox-iso" "ubuntu-cloud" {
 
 build {
   sources = [
-    "source.proxmox-iso.ubuntu-cloud"
+    "source.proxmox-iso.ubuntu-server-noble-numbat"
   ]
 
   provisioner "shell" {
@@ -101,9 +102,12 @@ build {
       "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
     ]
   }
-
   provisioner "file" {
-    source      = "http/prox-ubuntu/99-pve.cfg"
-    destination = "/etc/cloud/cloud.cfg.d/99-pve.cfg"
+      source = "/packer/http/prox-ubuntu/99-pve.cfg"
+      destination = "/tmp/99-pve.cfg"
+  }
+
+  provisioner "shell" {
+      inline = [ "sudo cp /tmp/99-pve.cfg /etc/cloud/cloud.cfg.d/99-pve.cfg" ]
   }
 }
