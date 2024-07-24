@@ -46,18 +46,11 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   username         = var.proxmox_username
   password         = var.proxmox_password
   # VM template core settings
-  bios             = "seabios"
   cores            = "2"
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
   http_directory   = "/packer/http/"
   iso_file         = var.iso_file
-  // additional_iso_files {
-  //   cd_files         = ["/packer/http/user-data"]
-  //   cd_label         = "cidata"
-  //   iso_storage_pool = "net-data"
-  //   unmount          = true
-  // }
   memory           = "4096"
   os               = "l26"
   scsi_controller  = "virtio-scsi-pci"
@@ -85,7 +78,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
     "e<wait>",
     "<down><down><down><end>",
     "<bs><bs><bs><bs><wait>",
-    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }} ---<wait>",
+    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
     "<f10><wait>"
   ]
   boot = "c"
