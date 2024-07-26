@@ -49,7 +49,8 @@ pipeline {
                       -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
                       -e ANSIBLE_SSH_PUBLIC_KEY="\$ANSIBLE_SSH_PUBLIC_KEY" -e PACKER_SSH_PUBLIC_KEY="\$PACKER_SSH_PUBLIC_KEY" \
                       mawhaze/packer:latest \
-                      /bin/bash -c "python /packer/scripts/create_cloud_init.py /packer/variables/node01-prox-ubuntu-2404.pkrvars.hcl /packer/http/prox-ubuntu/cloud-config.yml.j2 && \
+                      /bin/bash -c "source /home/sa-packer/packer-venv/bin/activate && \
+                      python /packer/scripts/create_cloud_init.py /packer/variables/node01-prox-ubuntu-2404.pkrvars.hcl prox-ubuntu/cloud-config.yml.j2 && \
                       packer build -var-file=variables/node01-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl"'
                   )
               }
