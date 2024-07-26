@@ -25,7 +25,7 @@ def render_cloud_init(variables_file, cloud_init_template):
             exit(1)
 
     # Rendered the cloud-init file for use in the Packer template
-    env = Environment(loader=FileSystemLoader('.'), trim_blocks=True, lstrip_blocks=True)
+    env = Environment(loader=FileSystemLoader('/packer'), trim_blocks=True, lstrip_blocks=True)
     template = env.get_template(cloud_init_template)
     cloud_init = template.render({'users': users})
     
