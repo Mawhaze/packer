@@ -6,13 +6,12 @@ autoinstall:
     layout: en
     variant: us
   network:
-    network:
-      version: 2
-      ethernets:
-        nics:
-          match:
-            name: en*
-          dhcp4: true
+    version: 2
+    ethernets:
+      nics:
+        match:
+          name: en*
+        dhcp4: true
   ssh:
     install-server: yes
   user-data:
