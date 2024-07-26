@@ -19,7 +19,9 @@ pipelineJob('packer/iso/proxmox_ubuntu_24.04_template') {
       // Inline Groovy script for pipeline definition
       script("""
 pipeline {
-  agent any
+  agent {
+      label 'net-host'
+  }
   stages {
       stage('Sign into DockerHub and Pull Docker Image') {
           steps {

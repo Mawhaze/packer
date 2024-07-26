@@ -49,6 +49,8 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   cores            = "2"
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
+  http_port_min    = "8800"
+  http_port_max    = "8800"
   http_directory   = "/packer/http/"
   iso_file         = var.iso_file
   memory           = "4096"
