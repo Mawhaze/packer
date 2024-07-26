@@ -58,6 +58,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   scsi_controller  = "virtio-scsi-pci"
   ssh_timeout      = "30m"
   ssh_username     = "sa-packer"
+  ssh_private_key  = var.ssh_private_key_file
   tags             = var.proxmox_template_tags
   template_name    = var.proxmox_template_name
   template_description = "Ubuntu 24.04 lab image, built on ${timestamp()}"
