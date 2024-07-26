@@ -1,8 +1,6 @@
 #cloud-config
 autoinstall:
   version: 1
-  early-commandsVj
-    - systemctl stop sshd
   locale: en_US
   keyboard:
     layout: en
@@ -32,3 +30,4 @@ autoinstall:
     - qemu-guest-agent
     - cloud-init
     - openssh-server
+  updates: all

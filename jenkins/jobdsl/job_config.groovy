@@ -49,13 +49,13 @@ pipeline {
 
               ]) {
                   sh(
-                      'docker run -e AWS_DEFAULT_REGION=us-west-2 \
+                      'docker run --network host -e AWS_DEFAULT_REGION=us-west-2 \
                       -e AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY \
                       -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
                       -e ANSIBLE_SSH_PUBLIC_KEY="\$ANSIBLE_SSH_PUBLIC_KEY" -e PACKER_SSH_PUBLIC_KEY="\$PACKER_SSH_PUBLIC_KEY" \
                       mawhaze/packer:latest \
                       /bin/bash -c "source /home/sa-packer/packer-venv/bin/activate && cd /packer && ls -la && \
-                      python /packer/scripts/create_cloud_init.py /packer/variables/node01-prox-ubuntu-2404.pkrvars.hcl /packer/http/prox-ubuntu/cloud-config.yml.j2 && \
+                      python scripts/create_cloud_init.py variables/node01-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-config.yml.j2 && \
                       packer build -var-file=variables/node01-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl"'
                   )
               }
