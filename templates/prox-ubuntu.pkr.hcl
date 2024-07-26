@@ -61,9 +61,8 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   os               = "l26"
   scsi_controller  = "virtio-scsi-pci"
   ssh_timeout      = "30m"
-  ssh_username     = "ubuntu"
-  ssh_password     = "ubuntu"
-  # ssh_private_key_file  = var.ssh_private_key_file
+  ssh_username     = "sa-packer"
+  ssh_private_key_file  = var.ssh_private_key_file
   tags             = var.proxmox_template_tags
   template_name    = var.proxmox_template_name
   template_description = "Ubuntu 24.04 lab image, built on ${timestamp()}"
@@ -86,7 +85,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
     "e<wait>",
     "<down><down><down><end>",
     "<bs><bs><bs><bs><wait>",
-    "ip=::::::dhcp<wait>::: ",
+    "ip=::::::dhcp<wait>",
     "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
     "<f10><wait>"
   ]

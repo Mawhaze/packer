@@ -14,6 +14,7 @@ autoinstall:
         dhcp4: true
   ssh:
     install-server: yes
+    allow-pw: true
   user-data:
     users:
       {% for user in users %}
