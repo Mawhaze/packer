@@ -50,6 +50,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   username         = var.proxmox_username
   password         = var.proxmox_password
   # VM template core settings
+  bios             = "ovmf"
   cores            = "2"
   cloud_init       = true
   cloud_init_storage_pool = "net-data"
