@@ -88,7 +88,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
     "<bs><bs><bs><bs><wait>",
     "ip=dhcp <wait>",
     "autoinstall <wait>",
-    " cloud-config-url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/user-data<wait>"
+    " cloud-config-url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/user-data<wait>",
     " ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
     "<f10><wait>"
   ]
