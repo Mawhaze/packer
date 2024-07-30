@@ -26,7 +26,7 @@ autoinstall:
     users:
       {% for user in users %}
       - name: {{ user.name }}
-        ssh-authorized-keys:
+        ssh_authorized_keys:
           - {{ user.ssh_public_key }}
         sudo: ALL=(ALL) NOPASSWD:ALL
         groups: [sudo]
