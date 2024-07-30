@@ -26,8 +26,8 @@ autoinstall:
         lock_passwd: true
         shell: /bin/bash
       {% endfor %}
-  packages:
-    - qemu-guest-agent
-    - cloud-init
-    - openssh-server
-  updates: all
+    packages:
+      - qemu-guest-agent
+      - cloud-init
+      - openssh-server
+    updates: all

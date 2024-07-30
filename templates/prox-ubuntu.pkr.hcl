@@ -86,7 +86,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
     "<down><down><down><end>",
     "<bs><bs><bs><bs><wait>",
     "ip=dhcp <wait>",
-    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<wait>",
+    "autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ <wait>",
     "<f10><wait>"
   ]
   boot = "c"
