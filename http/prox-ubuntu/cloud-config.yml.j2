@@ -12,9 +12,14 @@ autoinstall:
         match:
           name: en*
         dhcp4: true
+  packages:
+    - qemu-guest-agent
+    - cloud-init
+    - openssh-server
   ssh:
     install-server: yes
     allow-pw: true
+     updates: all
   user-data:
     users:
       {% for user in users %}
@@ -26,8 +31,3 @@ autoinstall:
         lock_passwd: true
         shell: /bin/bash
       {% endfor %}
-    packages:
-      - qemu-guest-agent
-      - cloud-init
-      - openssh-server
-    updates: all
