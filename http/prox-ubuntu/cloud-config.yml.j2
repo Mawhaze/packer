@@ -1,10 +1,12 @@
 #cloud-config
 autoinstall:
   version: 1
-  locale: en_US
+  identity:
+    hostname: ubuntu-20-04-template
   keyboard:
     layout: en
     variant: us
+  locale: en_US
   network:
     version: 2
     ethernets:
