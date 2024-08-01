@@ -9,5 +9,5 @@ proxmox_template_name = "ubuntu-24"
 # User data variables
 users = [
   {name = "sa-ansible"}
-  # {name = "sa-packer"}
+  {name = "sa-packer"}
 ]
