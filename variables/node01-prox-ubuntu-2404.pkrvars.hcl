@@ -8,6 +8,6 @@ proxmox_template_tags = "ubuntu;24.04;base_image"
 proxmox_template_name = "ubuntu-24"
 # User data variables
 users = [
-  {name = "sa-ansible"},
+  # {name = "sa-ansible"},
   {name = "sa-packer"}
 ]
