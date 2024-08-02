@@ -86,7 +86,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   }
 
   boot_command = [
-    "<esc><wait>",
+    "<wait><wait><wait>",
     "e<wait>",
     "<down><down><down><end>",
     "<bs><bs><bs><bs><wait>",
