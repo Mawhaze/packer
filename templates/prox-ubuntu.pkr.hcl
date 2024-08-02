@@ -80,7 +80,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
   }
 
   disks {
-    disk_size       = "32G"
+    disk_size       = "16G"
     storage_pool    = var.destination_storage_pool
     type            = "scsi"
   }
