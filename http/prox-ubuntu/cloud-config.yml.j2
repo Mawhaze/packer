@@ -18,8 +18,6 @@ autoinstall:
     install-server: yes
     allow-pw: true
   updates: all
-  late-commands:
-    - curtin in-target -- apt-get install qemu-guest-agent
   user-data:
     users:
       {% for user in users %}
