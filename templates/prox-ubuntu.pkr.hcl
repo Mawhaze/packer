@@ -7,6 +7,10 @@ packer {
   }
 }
 
+variable "destination_storage_pool" {
+  description = "Destination storage pool for the Proxmox template"
+}
+
 variable "node_name" {
   description = "Proxmox node name"
 }
