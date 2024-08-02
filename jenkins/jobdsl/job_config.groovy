@@ -14,6 +14,9 @@ pipelineJob('packer/iso/proxmox_ubuntu_24.04_template') {
   logRotator {
     numToKeep(10) //Only keep the last 10
   }
+  parameters {
+    stringParam('HOST_NODE', ['node01', 'storage'], 'Select the destination node')
+  }
   definition {
     cps {
       // Inline Groovy script for pipeline definition
@@ -52,7 +55,7 @@ pipeline {
                       -e PROXMOX_USERNAME=\$PROXMOX_USERNAME -e PROXMOX_PASSWORD=\$PROXMOX_PASSWORD \
                       mawhaze/packer:latest \
                       /bin/bash -c "source /home/sa-packer/packer-venv/bin/activate && cd /packer && ls -la && \
-                      python scripts/create_cloud_init.py variables/node01-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-config.yml.j2 && \
+                      python scripts/create_cloud_init.py variables/\$HOST_NODE-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-config.yml.j2 && \
                       packer build -var-file=variables/node01-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl"'
                   )
               }
