@@ -77,7 +77,7 @@ source "proxmox-iso" "ubuntu-server-noble-numbat" {
 
   disks {
     disk_size       = "32G"
-    storage_pool    = "net-data"
+    storage_pool    = var.destination_storage_pool
     type            = "scsi"
   }
 
