@@ -56,7 +56,7 @@ pipeline {
                       mawhaze/packer:latest \
                       /bin/bash -c "source /home/sa-packer/packer-venv/bin/activate && cd /packer && ls -la && \
                       python scripts/create_cloud_init.py variables/\$HOST_NODE-prox-ubuntu-2404.pkrvars.hcl http/prox-ubuntu/cloud-config.yml.j2 && \
-                      packer build -var-file=variables/node01-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl"'
+                      packer build -var-file=variables/\$HOST_NODE-prox-ubuntu-2404.pkrvars.hcl templates/prox-ubuntu.pkr.hcl"'
                   )
               }
           }
