@@ -15,7 +15,7 @@ pipelineJob('packer/iso/proxmox_ubuntu_24.04_template') {
     numToKeep(10) //Only keep the last 10
   }
   parameters {
-    choiceParam('HOST_NODE', ['node01', 'storage'], 'Select the destination node')
+    choiceParam('HOST_NODE', ['cuda', 'storage'], 'Select the destination node')
   }
   definition {
     cps {
